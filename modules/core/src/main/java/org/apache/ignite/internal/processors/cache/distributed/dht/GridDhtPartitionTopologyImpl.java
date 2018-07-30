@@ -2755,7 +2755,7 @@ public class GridDhtPartitionTopologyImpl implements GridDhtPartitionTopology {
      * @param aff Affinity assignments.
      */
     private void updateRebalanceVersion(AffinityTopologyVersion affVer, List<List<ClusterNode>> aff) {
-        if (!affVer.equals(diffFromAffinityVer))
+        if (!grp.isReplicated() && !affVer.equals(diffFromAffinityVer))
             return;
 
         if (!rebalancedTopVer.equals(readyTopVer)) {
