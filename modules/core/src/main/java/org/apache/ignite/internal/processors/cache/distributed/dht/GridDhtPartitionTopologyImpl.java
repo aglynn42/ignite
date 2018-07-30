@@ -1827,8 +1827,8 @@ public class GridDhtPartitionTopologyImpl implements GridDhtPartitionTopology {
 
     /** {@inheritDoc} */
     @Override public void onExchangeDone(@Nullable GridDhtPartitionsExchangeFuture fut,
-                                         AffinityAssignment assignment,
-                                         boolean updateRebalanceVer) {
+        AffinityAssignment assignment,
+        boolean updateRebalanceVer) {
         lock.writeLock().lock();
 
         try {
@@ -1850,6 +1850,9 @@ public class GridDhtPartitionTopologyImpl implements GridDhtPartitionTopology {
                 }
                 else
                     diffFromAffinityVer = readyTopVer;
+
+                if (!updateRebalanceVer)
+                    updateRebalanceVersion(assignment.topologyVersion(), assignment.assignment());
             }
 
             if (updateRebalanceVer)
@@ -2748,6 +2751,7 @@ public class GridDhtPartitionTopologyImpl implements GridDhtPartitionTopology {
     }
 
     /**
+     * @param affVer Affinity version.
      * @param aff Affinity assignments.
      */
     private void updateRebalanceVersion(AffinityTopologyVersion affVer, List<List<ClusterNode>> aff) {
